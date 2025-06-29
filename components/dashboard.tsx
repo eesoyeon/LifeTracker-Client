@@ -52,7 +52,7 @@ export function Dashboard() {
       <TopHeader title="Life Tracker" showLogo={true} />
 
       <main className="px-4 pt-20 pb-20 space-y-6">
-        {/* 환영 메시지 - 애니메이션 추가 */}
+        {/* 환영 메시지 - 최적화된 텍스트 대비 */}
         <div
           className={`bg-gradient-to-r from-gray-800 to-gray-700 rounded-3xl p-6 text-white border border-gray-700 shadow-mono-card card-hover-subtle transition-mono ${
             isVisible ? "text-reveal" : "opacity-0 translate-y-4"
@@ -61,16 +61,16 @@ export function Dashboard() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="heading-3 mb-2">안녕하세요! 👋</h2>
-              <p className="body-medium text-secondary">오늘도 목표를 달성해보세요</p>
+              <p className="text-description">오늘도 목표를 달성해보세요</p>
             </div>
             <div className="text-right">
               <div className="display-small transition-mono hover:scale-110">{completionRate}%</div>
-              <div className="caption text-tertiary">완료율</div>
+              <div className="text-caption">완료율</div>
             </div>
           </div>
         </div>
 
-        {/* 통계 카드 - 스태거 애니메이션 */}
+        {/* 통계 카드 - 개선된 텍스트 가독성 */}
         <div className="grid grid-cols-3 gap-4">
           {[
             { icon: CheckCircle2, value: completedTodos, label: "완료" },
@@ -88,15 +88,15 @@ export function Dashboard() {
               >
                 <CardContent className="p-4 text-center">
                   <Icon className="h-8 w-8 text-white mx-auto mb-3 icon-pulse" />
-                  <p className="display-small mb-1 transition-mono hover:text-gray-200">{stat.value}</p>
-                  <p className="caption text-quaternary">{stat.label}</p>
+                  <p className="display-small mb-1 transition-mono hover:text-gray-100">{stat.value}</p>
+                  <p className="text-caption">{stat.label}</p>
                 </CardContent>
               </Card>
             )
           })}
         </div>
 
-        {/* 오늘의 할 일 - 부드러운 애니메이션 */}
+        {/* 오늘의 할 일 - 최적화된 텍스트 계층 */}
         <Card
           className={`border-gray-800 bg-gray-900 shadow-mono-card card-hover-subtle transition-mono ${
             isVisible ? "scroll-reveal visible" : "scroll-reveal"
@@ -111,7 +111,7 @@ export function Dashboard() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-gray-400 hover:text-white shadow-mono-button button-bounce transition-mono"
+                className="button-text-ghost shadow-mono-button button-bounce transition-mono"
               >
                 <Plus className="h-4 w-4" />
               </Button>
@@ -129,11 +129,13 @@ export function Dashboard() {
                 {todo.completed ? (
                   <CheckCircle2 className="h-5 w-5 text-white flex-shrink-0 state-success" />
                 ) : (
-                  <Circle className="h-5 w-5 text-gray-500 flex-shrink-0 transition-mono hover:text-gray-300 hover:scale-110" />
+                  <Circle className="h-5 w-5 text-gray-400 flex-shrink-0 transition-mono hover:text-gray-200 hover:scale-110" />
                 )}
                 <div className="flex-1 min-w-0">
                   <p
-                    className={`body-medium transition-mono ${todo.completed ? "line-through text-tertiary" : "text-white hover:text-gray-200"}`}
+                    className={`body-medium transition-mono ${
+                      todo.completed ? "line-through text-muted" : "text-primary hover:text-secondary"
+                    }`}
                   >
                     {todo.title}
                   </p>
@@ -142,10 +144,10 @@ export function Dashboard() {
                   variant="outline"
                   className={`label-small shadow-mono-button transition-mono hover:scale-105 ${
                     todo.priority === "high"
-                      ? "border-red-500 text-red-400 bg-red-500/10 hover:bg-red-500/20"
+                      ? "border-red-400 text-red-300 bg-red-500/10 hover:bg-red-500/20"
                       : todo.priority === "medium"
-                        ? "border-yellow-500 text-yellow-400 bg-yellow-500/10 hover:bg-yellow-500/20"
-                        : "border-green-500 text-green-400 bg-green-500/10 hover:bg-green-500/20"
+                        ? "border-yellow-400 text-yellow-300 bg-yellow-500/10 hover:bg-yellow-500/20"
+                        : "border-green-400 text-green-300 bg-green-500/10 hover:bg-green-500/20"
                   }`}
                 >
                   {todo.priority === "high" ? "높음" : todo.priority === "medium" ? "보통" : "낮음"}
@@ -155,7 +157,7 @@ export function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* 최근 메모 - 부드러운 애니메이션 */}
+        {/* 최근 메모 - 개선된 텍스트 대비 */}
         <Card
           className={`border-gray-800 bg-gray-900 shadow-mono-card card-hover-subtle transition-mono ${
             isVisible ? "scroll-reveal visible" : "scroll-reveal"
@@ -170,7 +172,7 @@ export function Dashboard() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-gray-400 hover:text-white shadow-mono-button button-bounce transition-mono"
+                className="button-text-ghost shadow-mono-button button-bounce transition-mono"
               >
                 <Plus className="h-4 w-4" />
               </Button>
@@ -185,11 +187,11 @@ export function Dashboard() {
                 }`}
                 style={{ animationDelay: `${(index + 6) * 100}ms` }}
               >
-                <h4 className="label-large mb-2 transition-mono hover:text-gray-200">{memo.title}</h4>
-                <p className="body-small text-tertiary mb-3 line-clamp-2 transition-mono hover:text-gray-300">
+                <h4 className="label-large mb-2 transition-mono hover:text-secondary">{memo.title}</h4>
+                <p className="body-small text-tertiary mb-3 line-clamp-2 transition-mono hover:text-secondary">
                   {memo.content}
                 </p>
-                <p className="caption text-quaternary">{memo.createdAt}</p>
+                <p className="text-meta">{memo.createdAt}</p>
               </div>
             ))}
           </CardContent>

@@ -77,44 +77,50 @@ export default function MemosPage() {
       <TopHeader title="메모 관리" />
 
       <main className="px-4 pt-20 pb-20 space-y-4">
-        {/* 검색 및 추가 버튼 */}
+        {/* 검색 및 추가 버튼 - 최적화된 입력 필드 */}
         <div className="flex space-x-2">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
               placeholder="메모 검색..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 border-gray-800 focus:border-gray-600 bg-gray-900 text-white placeholder:text-gray-500"
+              className="pl-10 border-gray-800 focus:border-gray-600 bg-gray-900 text-primary placeholder-optimized"
             />
           </div>
-          <Button onClick={() => setIsCreating(true)} className="bg-white text-black hover:bg-gray-200 ios-touch">
+          <Button
+            onClick={() => setIsCreating(true)}
+            className="bg-white text-black hover:bg-gray-200 button-press shadow-mono-button transition-all-mono hover:shadow-mono-button-hover"
+          >
             <Plus className="h-4 w-4" />
           </Button>
         </div>
 
-        {/* 새 메모 작성 */}
+        {/* 새 메모 작성 - 개선된 텍스트 대비 */}
         {isCreating && (
-          <Card className="border-gray-800 rounded-2xl bg-gray-900">
+          <Card className="border-gray-800 rounded-2xl bg-gray-900 shadow-mono-card">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg font-semibold text-white">새 메모</CardTitle>
+              <CardTitle className="heading-5">새 메모</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Input
                 placeholder="메모 제목"
                 value={newMemo.title}
                 onChange={(e) => setNewMemo({ ...newMemo, title: e.target.value })}
-                className="border-gray-800 focus:border-gray-600 bg-gray-800 text-white placeholder:text-gray-500"
+                className="border-gray-800 focus:border-gray-600 bg-gray-800 text-primary placeholder-optimized"
               />
               <Textarea
                 placeholder="메모 내용을 입력하세요..."
                 value={newMemo.content}
                 onChange={(e) => setNewMemo({ ...newMemo, content: e.target.value })}
                 rows={4}
-                className="border-gray-800 focus:border-gray-600 resize-none bg-gray-800 text-white placeholder:text-gray-500"
+                className="border-gray-800 focus:border-gray-600 resize-none bg-gray-800 text-primary placeholder-optimized"
               />
               <div className="flex space-x-2">
-                <Button onClick={addMemo} className="bg-white text-black hover:bg-gray-200 ios-touch">
+                <Button
+                  onClick={addMemo}
+                  className="bg-white text-black hover:bg-gray-200 button-press shadow-mono-button transition-all-mono hover:shadow-mono-button-hover"
+                >
                   저장
                 </Button>
                 <Button
@@ -123,7 +129,7 @@ export default function MemosPage() {
                     setIsCreating(false)
                     setNewMemo({ title: "", content: "" })
                   }}
-                  className="border-gray-700 text-gray-400 hover:bg-gray-800 ios-touch"
+                  className="border-gray-700 button-text-ghost hover:bg-gray-800 button-press shadow-mono-button transition-all-mono hover:shadow-mono-button-hover"
                 >
                   취소
                 </Button>
@@ -132,18 +138,21 @@ export default function MemosPage() {
           </Card>
         )}
 
-        {/* 메모 목록 */}
+        {/* 메모 목록 - 최적화된 텍스트 계층 */}
         <div className="space-y-3">
           {filteredMemos.map((memo) => (
-            <Card key={memo.id} className="border-gray-800 rounded-2xl bg-gray-900 hover:bg-gray-800 transition-colors">
+            <Card
+              key={memo.id}
+              className="border-gray-800 rounded-2xl bg-gray-900 hover:bg-gray-800 transition-colors shadow-mono-card hover:shadow-mono-card-hover card-hover-subtle"
+            >
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="font-semibold text-white text-sm">{memo.title}</h3>
+                  <h3 className="label-large text-primary">{memo.title}</h3>
                   <div className="flex space-x-1">
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-8 w-8 p-0 text-gray-500 hover:text-gray-300 hover:bg-gray-800 ios-touch"
+                      className="h-8 w-8 p-0 text-gray-400 hover:text-gray-200 hover:bg-gray-800 button-press transition-mono"
                     >
                       <Edit3 className="h-4 w-4" />
                     </Button>
@@ -151,14 +160,14 @@ export default function MemosPage() {
                       variant="ghost"
                       size="sm"
                       onClick={() => deleteMemo(memo.id)}
-                      className="h-8 w-8 p-0 text-gray-500 hover:text-gray-300 hover:bg-gray-800 ios-touch"
+                      className="h-8 w-8 p-0 text-gray-400 hover:text-gray-200 hover:bg-gray-800 button-press transition-mono"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
-                <p className="text-sm text-gray-400 mb-3 line-clamp-3">{memo.content}</p>
-                <div className="flex justify-between items-center text-xs text-gray-500">
+                <p className="body-small text-tertiary mb-3 line-clamp-3">{memo.content}</p>
+                <div className="flex justify-between items-center text-meta">
                   <span>생성: {memo.createdAt}</span>
                   <span>수정: {memo.updatedAt}</span>
                 </div>
@@ -167,10 +176,12 @@ export default function MemosPage() {
           ))}
         </div>
 
+        {/* 빈 상태 - 개선된 텍스트 가독성 */}
         {filteredMemos.length === 0 && (
           <div className="text-center py-12">
             <Edit3 className="h-12 w-12 text-gray-600 mx-auto mb-4" />
-            <p className="text-gray-500">{searchTerm ? "검색 결과가 없습니다" : "메모가 없습니다"}</p>
+            <h3 className="heading-5 text-secondary mb-2">{searchTerm ? "검색 결과가 없습니다" : "메모가 없습니다"}</h3>
+            <p className="text-tertiary">새로운 메모를 작성해보세요</p>
           </div>
         )}
       </main>

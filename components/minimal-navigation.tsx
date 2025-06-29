@@ -22,6 +22,10 @@ export function MinimalNavigation({ title, currentPage }: MinimalNavigationProps
 
   const handleNavigation = (href: string) => {
     setIsMenuOpen(false)
+
+    // 페이지 전환 애니메이션
+    document.body.classList.add("page-exit")
+
     setTimeout(() => {
       window.location.href = href
     }, 150)
@@ -50,12 +54,12 @@ export function MinimalNavigation({ title, currentPage }: MinimalNavigationProps
         <>
           {/* 배경 오버레이 */}
           <div
-            className="fixed inset-0 bg-black/60 z-40 transition-opacity duration-300"
+            className="fixed inset-0 bg-black/60 z-40 transition-opacity duration-300 fade-in"
             onClick={() => setIsMenuOpen(false)}
           />
 
           {/* 사이드 드로어 */}
-          <div className="fixed top-0 left-0 h-full w-80 bg-gray-950 border-r border-gray-800 shadow-2xl z-50 transform transition-transform duration-300">
+          <div className="fixed top-0 left-0 h-full w-80 bg-gray-950 border-r border-gray-800 shadow-2xl z-50 slide-in-left">
             <div className="p-6">
               {/* 헤더 */}
               <div className="flex items-center justify-between mb-8">

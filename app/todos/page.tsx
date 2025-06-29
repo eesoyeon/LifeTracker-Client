@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { CheckCircle2, Circle, Plus, Settings, Filter, TrendingUp, AlertTriangle, MoreHorizontal } from "lucide-react"
+import { CheckCircle2, Circle, Plus, Settings, Filter, TrendingUp, MoreHorizontal } from "lucide-react"
 import { MinimalNavigation } from "@/components/minimal-navigation"
 import { TodoCreateModal } from "@/components/todo-create-modal"
 import { CategoryManager } from "@/components/category-manager"
 import { MinimalCalendar } from "@/components/minimal-calendar"
+import { getIconComponent } from "@/lib/icons"
 
 interface Category {
   id: string
@@ -49,9 +49,9 @@ export default function TodosPage() {
       completed: false,
       priority: "high",
       categoryId: "work",
-      dueDate: "2025-07-20",
+      dueDate: "2025-07-15",
       dueTime: "14:00",
-      createdAt: "2025-01-15",
+      createdAt: "2025-07-10",
     },
     {
       id: "2",
@@ -59,9 +59,9 @@ export default function TodosPage() {
       completed: true,
       priority: "medium",
       categoryId: "health",
-      dueDate: "2025-07-20",
+      dueDate: "2025-07-15",
       dueTime: "18:00",
-      createdAt: "2025-01-15",
+      createdAt: "2025-07-10",
     },
     {
       id: "3",
@@ -69,8 +69,8 @@ export default function TodosPage() {
       completed: true,
       priority: "low",
       categoryId: "learning",
-      dueDate: "2025-07-19",
-      createdAt: "2025-01-14",
+      dueDate: "2025-07-14",
+      createdAt: "2025-07-09",
     },
     {
       id: "4",
@@ -78,9 +78,9 @@ export default function TodosPage() {
       completed: false,
       priority: "medium",
       categoryId: "personal",
-      dueDate: "2025-07-18",
+      dueDate: "2025-07-16",
       dueTime: "10:30",
-      createdAt: "2025-01-15",
+      createdAt: "2025-07-10",
     },
     {
       id: "5",
@@ -88,8 +88,8 @@ export default function TodosPage() {
       completed: false,
       priority: "low",
       categoryId: "learning",
-      dueDate: "2025-07-22",
-      createdAt: "2025-01-14",
+      dueDate: "2025-07-17",
+      createdAt: "2025-07-09",
     },
     {
       id: "6",
@@ -97,9 +97,9 @@ export default function TodosPage() {
       completed: false,
       priority: "high",
       categoryId: "work",
-      dueDate: "2025-07-21",
+      dueDate: "2025-07-16",
       dueTime: "09:00",
-      createdAt: "2024-01-15",
+      createdAt: "2025-07-10",
     },
   ])
 
@@ -107,10 +107,16 @@ export default function TodosPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
 
   useEffect(() => {
+    // 페이지 진입 애니메이션
+    document.body.classList.add("page-enter")
     const timer = setTimeout(() => {
       setIsVisible(true)
     }, 100)
-    return () => clearTimeout(timer)
+
+    return () => {
+      clearTimeout(timer)
+      document.body.classList.remove("page-enter")
+    }
   }, [])
 
   const toggleTodo = (id: string) => {
@@ -144,6 +150,18 @@ export default function TodosPage() {
   }
 
   const getCategoryById = (id: string) => categories.find((cat) => cat.id === id)
+
+  const getCategoryColor = (colorName: string) => {
+    const colorMap = {
+      blue: "text-blue-400 bg-blue-500/10 border-blue-500/20",
+      green: "text-green-400 bg-green-500/10 border-green-500/20",
+      red: "text-red-400 bg-red-500/10 border-red-500/20",
+      purple: "text-purple-400 bg-purple-500/10 border-purple-500/20",
+      yellow: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20",
+      orange: "text-orange-400 bg-orange-500/10 border-orange-500/20",
+    }
+    return colorMap[colorName as keyof typeof colorMap] || "text-gray-400 bg-gray-500/10 border-gray-500/20"
+  }
 
   // 선택된 날짜의 할 일만 필터링
   const selectedDateString = selectedDate.toISOString().split("T")[0]
@@ -211,11 +229,6 @@ export default function TodosPage() {
   const completedTodosForDate = filteredTodos.filter((todo) => todo.completed).length
   const totalTodosForDate = filteredTodos.length
 
-  const today = new Date()
-  const selectedDateOnly = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
-  const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-  const isOverdue = selectedDateOnly < todayOnly && activeTodosForDate > 0
-
   const getStatusMessage = () => {
     if (totalTodosForDate === 0) {
       return "할 일이 없습니다"
@@ -223,16 +236,12 @@ export default function TodosPage() {
     if (activeTodosForDate === 0) {
       return "모든 할 일을 완료했습니다"
     }
-    if (isOverdue) {
-      return `${activeTodosForDate}개의 할 일이 지연되었습니다`
-    }
     return `${activeTodosForDate}개의 할 일이 남았습니다`
   }
 
   const getStatusIcon = () => {
     if (totalTodosForDate === 0) return null
     if (activeTodosForDate === 0) return <CheckCircle2 className="h-4 w-4 text-gray-400" />
-    if (isOverdue) return <AlertTriangle className="h-4 w-4 text-red-400" />
     return <TrendingUp className="h-4 w-4 text-gray-400" />
   }
 
@@ -240,18 +249,24 @@ export default function TodosPage() {
     <div className="min-h-screen bg-black">
       <MinimalNavigation title="할 일" currentPage="todos" />
 
-      <main className="px-4 pt-20 pb-8 space-y-4">
-        {/* 달력 */}
-        <MinimalCalendar selectedDate={selectedDate} onDateSelect={setSelectedDate} getTodosForDate={getTodosForDate} />
+      <main className="px-4 pt-20 pb-24 space-y-4">
+        {/* 달력 - 애니메이션 적용 */}
+        <div className={`slide-up ${isVisible ? "" : "opacity-0"}`}>
+          <MinimalCalendar
+            selectedDate={selectedDate}
+            onDateSelect={setSelectedDate}
+            getTodosForDate={getTodosForDate}
+          />
+        </div>
 
-        {/* 선택된 날짜 헤더 */}
-        <div className="flex items-center justify-between">
+        {/* 선택된 날짜 헤더 - 애니메이션 적용 */}
+        <div className={`flex items-center justify-between slide-in-left stagger-1 ${isVisible ? "" : "opacity-0"}`}>
           <div>
             <div className="flex items-center space-x-2 mb-1">
               <h2 className="text-lg font-medium text-white">{formatSelectedDate(selectedDate)}</h2>
               {getStatusIcon()}
             </div>
-            <p className={`text-sm ${isOverdue ? "text-red-400" : "text-gray-400"}`}>{getStatusMessage()}</p>
+            <p className="text-sm text-gray-400">{getStatusMessage()}</p>
           </div>
           <div className="flex space-x-1">
             <Button
@@ -273,9 +288,9 @@ export default function TodosPage() {
           </div>
         </div>
 
-        {/* 필터 */}
+        {/* 필터 - 애니메이션 적용 */}
         {showFilters && (
-          <div className="space-y-3 p-3 bg-gray-900 rounded-xl border border-gray-800">
+          <div className="space-y-3 p-3 bg-gray-900 rounded-xl border border-gray-800 scale-in">
             <div className="flex space-x-2">
               {[
                 { key: "all", label: "전체" },
@@ -330,77 +345,64 @@ export default function TodosPage() {
           </div>
         )}
 
-        {/* 할 일 추가 버튼 */}
-        <Button
-          onClick={() => setShowCreateModal(true)}
-          className="w-full bg-white hover:bg-gray-200 text-black h-10 rounded-xl text-sm"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          {formatSelectedDate(selectedDate)}에 할 일 추가
-        </Button>
-
-        {/* 할 일 목록 */}
-        <div className="space-y-2">
-          {filteredTodos.map((todo) => {
+        {/* 할 일 목록 - 스태거 애니메이션 */}
+        <div className="space-y-3">
+          {filteredTodos.map((todo, index) => {
             const category = getCategoryById(todo.categoryId)
-            const now = new Date()
-            const todoDateTime = new Date(`${todo.dueDate}T${todo.dueTime || "23:59"}`)
-            const isTodoOverdue = todoDateTime < now && !todo.completed
+
+            if (!category) return null
+
+            const IconComponent = getIconComponent(category.icon)
+            const categoryColorClass = getCategoryColor(category.color)
 
             return (
               <Card
                 key={todo.id}
-                className={`border-gray-800 bg-gray-900 hover:bg-gray-800 transition-colors ${
-                  isTodoOverdue ? "border-red-500/20" : ""
-                }`}
+                className={`border-gray-800 bg-gray-900 hover:bg-gray-800 transition-colors slide-in-right stagger-${Math.min(index + 2, 5)} ${isVisible ? "" : "opacity-0"}`}
               >
-                <CardContent className="p-3">
+                <CardContent className="p-4">
                   <div className="flex items-start space-x-3">
-                    <button onClick={() => toggleTodo(todo.id)} className="flex-shrink-0 mt-0.5">
+                    <button onClick={() => toggleTodo(todo.id)} className="flex-shrink-0 mt-1">
                       {todo.completed ? (
-                        <CheckCircle2 className="h-4 w-4 text-white" />
+                        <CheckCircle2 className="h-5 w-5 text-white" />
                       ) : (
-                        <Circle
-                          className={`h-4 w-4 ${isTodoOverdue ? "text-red-400" : "text-gray-400"} hover:text-gray-200`}
-                        />
+                        <Circle className="h-5 w-5 text-gray-400 hover:text-gray-200" />
                       )}
                     </button>
 
                     <div className="flex-1 min-w-0">
+                      {/* 카테고리 */}
+                      <div className="flex items-center space-x-2 mb-2">
+                        <div
+                          className={`inline-flex items-center space-x-1.5 px-2 py-1 rounded-md border text-xs font-medium ${categoryColorClass}`}
+                        >
+                          <IconComponent className="h-3 w-3" />
+                          <span>{category.name}</span>
+                        </div>
+                      </div>
+
+                      {/* 할 일 제목 */}
                       <p
-                        className={`text-sm font-medium mb-1 ${
-                          todo.completed ? "line-through text-gray-500" : isTodoOverdue ? "text-red-300" : "text-white"
+                        className={`text-base font-medium mb-2 ${
+                          todo.completed ? "line-through text-gray-500" : "text-white"
                         }`}
                       >
                         {todo.title}
                       </p>
 
+                      {/* 시간 정보 */}
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2 text-xs text-gray-500">
-                          {todo.dueTime && (
-                            <span className={isTodoOverdue ? "text-red-400" : ""}>{formatTime(todo.dueTime)}</span>
-                          )}
-                          {isTodoOverdue && (
-                            <Badge variant="outline" className="text-xs border-red-500 text-red-400 bg-red-950/20">
-                              지연
-                            </Badge>
-                          )}
+                        <div className="flex items-center space-x-2">
+                          {todo.dueTime && <span className="text-sm text-gray-400">{formatTime(todo.dueTime)}</span>}
                         </div>
 
-                        <div className="flex items-center space-x-2">
-                          {category && (
-                            <Badge variant="outline" className="text-xs border-gray-600 text-gray-400 bg-gray-800/50">
-                              {category.name}
-                            </Badge>
-                          )}
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-6 w-6 p-0 text-gray-400 hover:text-white hover:bg-gray-700"
-                          >
-                            <MoreHorizontal className="h-3 w-3" />
-                          </Button>
-                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 w-7 p-0 text-gray-400 hover:text-white hover:bg-gray-700"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -410,17 +412,27 @@ export default function TodosPage() {
           })}
         </div>
 
-        {/* 빈 상태 */}
+        {/* 빈 상태 - 애니메이션 적용 */}
         {filteredTodos.length === 0 && (
-          <div className="text-center py-12">
+          <div className={`text-center py-12 fade-in stagger-3 ${isVisible ? "" : "opacity-0"}`}>
             <Circle className="h-8 w-8 text-gray-600 mx-auto mb-3" />
             <h3 className="text-base font-medium text-gray-300 mb-1">
               {formatSelectedDate(selectedDate)}에 할 일이 없습니다
             </h3>
-            <p className="text-sm text-gray-500">새로운 할 일을 추가해보세요</p>
+            <p className="text-sm text-gray-500">아래 버튼을 눌러 새로운 할 일을 추가해보세요</p>
           </div>
         )}
       </main>
+
+      {/* 플로팅 할 일 추가 버튼 - 애니메이션 적용 */}
+      <div className={`fixed bottom-20 right-4 z-40 scale-in stagger-4 ${isVisible ? "" : "opacity-0"}`}>
+        <Button
+          onClick={() => setShowCreateModal(true)}
+          className="h-14 w-14 rounded-full bg-white hover:bg-gray-200 text-black shadow-2xl hover:scale-105 transition-all duration-200"
+        >
+          <Plus className="h-6 w-6" />
+        </Button>
+      </div>
 
       {/* 모달들 */}
       <TodoCreateModal

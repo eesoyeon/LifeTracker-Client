@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { User, Mail, Phone, MapPin, Settings, LogOut, Edit3 } from "lucide-react"
+import { User, Mail, Phone, MapPin, Settings, LogOut, Edit3, Type } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
 import { TopHeader } from "@/components/top-header"
+import { FontSizeSelector } from "@/components/font-size-selector"
+
 
 interface UserProfile {
   name: string
@@ -31,6 +33,7 @@ export default function ProfilePage() {
 
   const [isEditing, setIsEditing] = useState(false)
   const [editProfile, setEditProfile] = useState(profile)
+  const [showFontSettings, setShowFontSettings] = useState(false)
 
   const handleSave = () => {
     setProfile(editProfile)
@@ -54,7 +57,7 @@ export default function ProfilePage() {
 
       <main className="px-4 pt-20 pb-20 space-y-6">
         {/* 프로필 카드 */}
-        <Card className="border-gray-800 bg-gray-900 rounded-2xl">
+        <Card className="border-gray-800 bg-gray-900 rounded-2xl shadow-mono-card">
           <CardContent className="p-6">
             <div className="flex items-center space-x-4 mb-6">
               <Avatar className="h-20 w-20 bg-gray-800">
@@ -62,9 +65,9 @@ export default function ProfilePage() {
                 <AvatarFallback className="bg-gray-800 text-gray-300 text-lg">{profile.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <h2 className="text-xl font-bold text-white">{profile.name}</h2>
-                <p className="text-gray-400">{profile.email}</p>
-                <Badge variant="outline" className="mt-2 border-gray-600 text-gray-400 bg-gray-800">
+                <h2 className="heading-3">{profile.name}</h2>
+                <p className="text-quaternary body-medium">{profile.email}</p>
+                <Badge variant="outline" className="mt-2 border-gray-600 text-gray-400 bg-gray-800 label-small">
                   {profile.joinDate}부터 사용
                 </Badge>
               </div>
@@ -72,7 +75,7 @@ export default function ProfilePage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setIsEditing(true)}
-                className="border-gray-700 text-gray-400 hover:bg-gray-800 ios-touch"
+                className="border-gray-700 text-gray-400 hover:bg-gray-800 button-press transition-mono"
               >
                 <Edit3 className="h-4 w-4" />
               </Button>
@@ -83,120 +86,144 @@ export default function ProfilePage() {
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
                   <div className={`w-12 h-12 ${stat.color} rounded-full flex items-center justify-center mx-auto mb-2`}>
-                    <span className="text-black font-bold">{stat.value}</span>
+                    <span className="text-black font-bold body-medium">{stat.value}</span>
                   </div>
-                  <p className="text-xs text-gray-500">{stat.label}</p>
+                  <p className="caption text-quaternary">{stat.label}</p>
                 </div>
               ))}
             </div>
           </CardContent>
         </Card>
 
-        {/* 프로필 정보 */}
-        <Card className="border-gray-800 bg-gray-900 rounded-2xl">
+        {/* 개인 정보 카드 */}
+        <Card className="border-gray-800 bg-gray-900 rounded-2xl shadow-mono-card">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white">개인 정보</CardTitle>
+            <CardTitle className="heading-5">개인 정보</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center space-x-3">
               <User className="h-5 w-5 text-gray-500" />
               <div className="flex-1">
-                <p className="text-sm text-gray-500">이름</p>
-                <p className="text-white">{profile.name}</p>
+                <p className="caption text-quaternary">이름</p>
+                <p className="text-primary body-medium">{profile.name}</p>
               </div>
             </div>
 
             <div className="flex items-center space-x-3">
               <Mail className="h-5 w-5 text-gray-500" />
               <div className="flex-1">
-                <p className="text-sm text-gray-500">이메일</p>
-                <p className="text-white">{profile.email}</p>
+                <p className="caption text-quaternary">이메일</p>
+                <p className="text-primary body-medium">{profile.email}</p>
               </div>
             </div>
 
             <div className="flex items-center space-x-3">
               <Phone className="h-5 w-5 text-gray-500" />
               <div className="flex-1">
-                <p className="text-sm text-gray-500">전화번호</p>
-                <p className="text-white">{profile.phone}</p>
+                <p className="caption text-quaternary">전화번호</p>
+                <p className="text-primary body-medium">{profile.phone}</p>
               </div>
             </div>
 
             <div className="flex items-center space-x-3">
               <MapPin className="h-5 w-5 text-gray-500" />
               <div className="flex-1">
-                <p className="text-sm text-gray-500">위치</p>
-                <p className="text-white">{profile.location}</p>
+                <p className="caption text-quaternary">위치</p>
+                <p className="text-primary body-medium">{profile.location}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* 설정 메뉴 */}
-        <Card className="border-gray-800 bg-gray-900 rounded-2xl">
+        {/* 접근성 설정 카드 */}
+        <Card className="border-gray-800 bg-gray-900 rounded-2xl shadow-mono-card">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white">설정</CardTitle>
+            <CardTitle className="heading-5">접근성 설정</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-400 hover:bg-gray-800 hover:text-white ios-touch"
+              onClick={() => setShowFontSettings(!showFontSettings)}
+              className="w-full justify-start button-text-ghost hover:bg-gray-800 button-press transition-mono"
             >
-              <Settings className="h-5 w-5 mr-3" />앱 설정
+              <Type className="h-5 w-5 mr-3" />
+              <span className="body-medium">글자 크기 설정</span>
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* 폰트 크기 설정 */}
+        {showFontSettings && <FontSizeSelector />}
+
+        {/* 설정 메뉴 */}
+        <Card className="border-gray-800 bg-gray-900 rounded-2xl shadow-mono-card">
+          <CardHeader>
+            <CardTitle className="heading-5">설정</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Button
+              variant="ghost"
+              className="w-full justify-start button-text-ghost hover:bg-gray-800 button-press transition-mono"
+            >
+              <Settings className="h-5 w-5 mr-3" />
+              <span className="body-medium">앱 설정</span>
             </Button>
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-400 hover:bg-gray-800 hover:text-white ios-touch"
+              className="w-full justify-start button-text-ghost hover:bg-gray-800 button-press transition-mono"
             >
               <LogOut className="h-5 w-5 mr-3" />
-              로그아웃
+              <span className="body-medium">로그아웃</span>
             </Button>
           </CardContent>
         </Card>
 
         {/* 프로필 편집 모달 */}
         {isEditing && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-            <Card className="w-full max-w-md border-gray-800 bg-gray-900 rounded-2xl">
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 modal-backdrop">
+            <Card className="w-full max-w-md border-gray-800 bg-gray-900 rounded-2xl shadow-mono-modal modal-content">
               <CardHeader>
-                <CardTitle className="text-lg font-semibold text-white">프로필 편집</CardTitle>
+                <CardTitle className="heading-5">프로필 편집</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <label className="text-sm text-gray-500 mb-1 block">이름</label>
+                  <label className="caption text-quaternary mb-1 block">이름</label>
                   <Input
                     value={editProfile.name}
                     onChange={(e) => setEditProfile({ ...editProfile, name: e.target.value })}
-                    className="bg-gray-800 border-gray-700 text-white focus:border-gray-600"
+                    className="bg-gray-800 border-gray-700 text-primary focus:border-gray-600 body-medium"
                   />
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-500 mb-1 block">전화번호</label>
+                  <label className="caption text-quaternary mb-1 block">전화번호</label>
                   <Input
                     value={editProfile.phone}
                     onChange={(e) => setEditProfile({ ...editProfile, phone: e.target.value })}
-                    className="bg-gray-800 border-gray-700 text-white focus:border-gray-600"
+                    className="bg-gray-800 border-gray-700 text-primary focus:border-gray-600 body-medium"
                   />
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-500 mb-1 block">위치</label>
+                  <label className="caption text-quaternary mb-1 block">위치</label>
                   <Input
                     value={editProfile.location}
                     onChange={(e) => setEditProfile({ ...editProfile, location: e.target.value })}
-                    className="bg-gray-800 border-gray-700 text-white focus:border-gray-600"
+                    className="bg-gray-800 border-gray-700 text-primary focus:border-gray-600 body-medium"
                   />
                 </div>
 
                 <div className="flex space-x-2 pt-4">
-                  <Button onClick={handleSave} className="flex-1 bg-white hover:bg-gray-200 text-black ios-touch">
+                  <Button
+                    onClick={handleSave}
+                    className="flex-1 bg-white hover:bg-gray-200 text-black button-press transition-mono body-medium"
+                  >
                     저장
                   </Button>
                   <Button
                     variant="outline"
                     onClick={handleCancel}
-                    className="flex-1 border-gray-700 text-gray-400 bg-transparent hover:bg-gray-800 ios-touch"
+                    className="flex-1 border-gray-700 button-text-ghost bg-transparent hover:bg-gray-800 button-press transition-mono body-medium"
                   >
                     취소
                   </Button>

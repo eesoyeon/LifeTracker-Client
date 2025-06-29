@@ -8,8 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users, MessageCircle, Search, Plus, UserPlus } from "lucide-react"
-import { BottomNavigation } from "@/components/bottom-navigation"
-import { TopHeader } from "@/components/top-header"
+import { MinimalNavigation } from "@/components/minimal-navigation"
 import Link from "next/link"
 
 interface Friend {
@@ -113,10 +112,10 @@ export default function SocialPage() {
   )
 
   return (
-    <div className="min-h-screen bg-black safe-area-top safe-area-bottom">
-      <TopHeader title="소셜" />
+    <div className="min-h-screen bg-black">
+      <MinimalNavigation title="소셜" currentPage="social" />
 
-      <main className="px-4 pt-20 pb-20">
+      <main className="px-4 pt-20 pb-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-4 bg-gray-900 border-gray-800">
             <TabsTrigger
@@ -146,7 +145,7 @@ export default function SocialPage() {
                 className="pl-10 bg-gray-900 border-gray-800 text-white placeholder:text-gray-500 focus:border-gray-600"
               />
             </div>
-            <Button className="bg-white hover:bg-gray-200 text-black ios-touch">
+            <Button className="bg-white hover:bg-gray-200 text-black">
               <Plus className="h-4 w-4" />
             </Button>
           </div>
@@ -159,7 +158,7 @@ export default function SocialPage() {
                 <div className="flex items-center justify-center space-x-3 text-gray-500">
                   <UserPlus className="h-5 w-5" />
                   <span className="text-sm">이메일로 친구 초대하기</span>
-                  <Button variant="ghost" size="sm" className="text-white hover:bg-gray-800 ios-touch">
+                  <Button variant="ghost" size="sm" className="text-white hover:bg-gray-800">
                     초대
                   </Button>
                 </div>
@@ -202,7 +201,7 @@ export default function SocialPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="border-gray-700 text-gray-400 bg-transparent hover:bg-gray-800 ios-touch"
+                          className="border-gray-700 text-gray-400 bg-transparent hover:bg-gray-800"
                         >
                           <MessageCircle className="h-4 w-4" />
                         </Button>
@@ -268,8 +267,6 @@ export default function SocialPage() {
           </TabsContent>
         </Tabs>
       </main>
-
-      <BottomNavigation currentPage="social" />
     </div>
   )
 }

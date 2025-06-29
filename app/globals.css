@@ -6,17 +6,17 @@
   :root {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
-    --card: 0 0% 8%;
+    --card: 0 0% 6%;
     --card-foreground: 0 0% 100%;
-    --popover: 0 0% 8%;
+    --popover: 0 0% 6%;
     --popover-foreground: 0 0% 100%;
     --primary: 0 0% 100%;
     --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 12%;
+    --secondary: 0 0% 10%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 12%;
+    --muted: 0 0% 10%;
     --muted-foreground: 0 0% 60%;
-    --accent: 0 0% 12%;
+    --accent: 0 0% 10%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 0% 45%;
     --destructive-foreground: 0 0% 100%;
@@ -39,13 +39,6 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-  }
-
-  /* 완전한 모노톤 다크모드 */
-  .mono-dark {
-    background: #000000;
-    color: #ffffff;
   }
 
   /* iOS 스타일 스크롤바 숨기기 */
@@ -71,18 +64,6 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-  }
-
-  /* 페이지 전환 애니메이션 */
-  .page-transition-enter {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-  }
-
-  .page-transition-enter-active {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
   }
 }
 
@@ -140,46 +121,33 @@
 
   .body-small {
     font-size: calc(0.75rem * var(--font-size-multiplier));
-    @apply font-normal leading-normal text-gray-100;
+    @apply font-normal leading-normal text-gray-300;
     transition: font-size 0.3s ease-out;
   }
 
-  /* 접근성 최적화 텍스트 색상 계층 */
+  /* Linear/V0 스타일 텍스트 색상 계층 */
   .text-primary {
-    @apply text-white; /* 21:1 대비 - 최고 가독성 */
+    @apply text-white;
   }
 
   .text-secondary {
-    @apply text-gray-100; /* 19:1 대비 - 매우 높은 가독성 */
+    @apply text-gray-200;
   }
 
   .text-tertiary {
-    @apply text-gray-300; /* 12:1 대비 - 높은 가독성 */
+    @apply text-gray-300;
   }
 
   .text-quaternary {
-    @apply text-gray-400; /* 7:1 대비 - 적절한 가독성 */
+    @apply text-gray-400;
   }
 
   .text-muted {
-    @apply text-gray-500; /* 4.6:1 대비 - 최소 기준 */
+    @apply text-gray-500;
   }
 
   .text-disabled {
-    @apply text-gray-600; /* 3.2:1 대비 - 비활성 상태만 */
-  }
-
-  /* 설명 텍스트 - 개선된 가독성 */
-  .text-description {
-    @apply text-gray-200; /* 16:1 대비 */
-  }
-
-  .text-subtitle {
-    @apply text-gray-100; /* 19:1 대비 */
-  }
-
-  .text-caption {
-    @apply text-gray-300; /* 12:1 대비 */
+    @apply text-gray-600;
   }
 
   /* 라벨 및 캡션 - 동적 크기 적용 */
@@ -197,19 +165,13 @@
 
   .label-small {
     font-size: calc(0.75rem * var(--font-size-multiplier));
-    @apply font-medium leading-tight text-gray-200;
+    @apply font-medium leading-tight text-gray-300;
     transition: font-size 0.3s ease-out;
   }
 
   .caption {
     font-size: calc(0.75rem * var(--font-size-multiplier));
-    @apply font-normal leading-tight text-gray-300;
-    transition: font-size 0.3s ease-out;
-  }
-
-  .overline {
-    font-size: calc(0.75rem * var(--font-size-multiplier));
-    @apply font-medium leading-tight tracking-wider uppercase text-gray-400;
+    @apply font-normal leading-tight text-gray-400;
     transition: font-size 0.3s ease-out;
   }
 
@@ -232,65 +194,17 @@
     transition: font-size 0.3s ease-out;
   }
 
-  /* 인터랙티브 텍스트 - 호버 상태 최적화 */
-  .text-interactive {
-    @apply text-white hover:text-gray-100 transition-colors duration-200;
-  }
-
-  .text-interactive-secondary {
-    @apply text-gray-200 hover:text-white transition-colors duration-200;
-  }
-
-  .text-link {
-    @apply text-white underline hover:text-gray-100 transition-colors duration-200;
-  }
-
-  /* 상태별 텍스트 - 높은 대비 보장 */
-  .text-success {
-    @apply text-green-300; /* 더 밝은 녹색으로 대비 개선 */
-  }
-
-  .text-warning {
-    @apply text-yellow-300; /* 더 밝은 노란색으로 대비 개선 */
-  }
-
-  .text-error {
-    @apply text-red-300; /* 더 밝은 빨간색으로 대비 개선 */
-  }
-
-  .text-info {
-    @apply text-blue-300; /* 더 밝은 파란색으로 대비 개선 */
-  }
-
-  /* 플레이스홀더 텍스트 최적화 */
-  .placeholder-optimized::placeholder {
-    @apply text-gray-400; /* 7:1 대비 보장 */
-  }
-
-  /* 메타 정보 텍스트 - 동적 크기 적용 */
+  /* 메타 정보 텍스트 */
   .text-meta {
     font-size: calc(0.75rem * var(--font-size-multiplier));
-    @apply text-gray-400; /* 날짜, 시간 등 메타 정보 */
+    @apply text-gray-500;
     transition: font-size 0.3s ease-out;
   }
 
   .text-timestamp {
     font-size: calc(0.75rem * var(--font-size-multiplier));
-    @apply text-gray-400; /* 타임스탬프 */
+    @apply text-gray-500;
     transition: font-size 0.3s ease-out;
-  }
-
-  /* 버튼 텍스트 최적화 */
-  .button-text-primary {
-    @apply text-black; /* 흰 배경 버튼 */
-  }
-
-  .button-text-secondary {
-    @apply text-white; /* 어두운 배경 버튼 */
-  }
-
-  .button-text-ghost {
-    @apply text-gray-200 hover:text-white; /* 고스트 버튼 */
   }
 
   /* 반응형 폰트 크기 조정 */
@@ -311,395 +225,28 @@
       font-size: calc(2.5rem * var(--font-size-multiplier));
     }
   }
-
-  /* 큰 화면에서의 최대 크기 제한 */
-  @media (min-width: 1024px) {
-    .heading-1 {
-      font-size: min(calc(3rem * var(--font-size-multiplier)), 4rem);
-    }
-
-    .display-large {
-      font-size: min(calc(4rem * var(--font-size-multiplier)), 5rem);
-    }
-  }
 }
 
-/* 모노톤 그림자 시스템 */
+/* Linear/V0 스타일 미니멀 애니메이션 */
 @layer components {
-  /* 카드 그림자 - 미묘한 깊이감 */
-  .shadow-mono-card {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
-  }
-
-  /* 카드 호버 그림자 - 상호작용 피드백 */
-  .shadow-mono-card-hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
-  }
-
-  /* 버튼 그림자 - 클릭 가능함 표시 */
-  .shadow-mono-button {
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
-  }
-
-  /* 버튼 호버 그림자 */
-  .shadow-mono-button-hover {
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4), 0 1px 3px 1px rgba(0, 0, 0, 0.2);
-  }
-
-  /* 모달/팝업 그림자 - 강한 분리감 */
-  .shadow-mono-modal {
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
-  }
-
-  /* 입력 필드 내부 그림자 - 깊이감 */
-  .shadow-mono-inset {
-    box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.4), inset 0 1px 3px 1px rgba(0, 0, 0, 0.2);
-  }
-
-  /* 헤더 그림자 - 플로팅 효과 */
-  .shadow-mono-header {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
-  }
-
-  /* 활성 상태 글로우 - 흰색 미묘한 발광 */
-  .shadow-mono-glow {
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.4);
-  }
-
-  /* 활성 상태 강한 글로우 */
-  .shadow-mono-glow-strong {
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15), 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  }
-
-  /* 네비게이션 그림자 */
-  .shadow-mono-nav {
-    box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.3), 0 -1px 2px -1px rgba(0, 0, 0, 0.2);
-  }
-}
-
-/* 호버 및 포커스 전환 효과 */
-@layer utilities {
-  .transition-shadow-mono {
-    transition: box-shadow 0.2s ease-out, transform 0.2s ease-out;
-  }
-
-  .transition-all-mono {
-    transition: all 0.2s ease-out;
-  }
-}
-
-/* 모노톤 애니메이션 시스템 */
-@layer components {
-  /* 기본 전환 효과 */
-  .transition-mono {
+  .transition-minimal {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .transition-mono-slow {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  .hover-minimal {
+    @apply transition-minimal hover:bg-gray-800;
   }
 
-  .transition-mono-fast {
-    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  .button-minimal {
+    @apply transition-minimal hover:scale-[1.02] active:scale-[0.98];
   }
 
-  /* 부드러운 스프링 애니메이션 */
-  .transition-spring {
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .transition-spring-slow {
-    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  /* 카드 호버 애니메이션 */
-  .card-hover {
-    @apply transition-mono hover:-translate-y-1 hover:scale-[1.02];
-  }
-
-  .card-hover-subtle {
-    @apply transition-mono hover:-translate-y-0.5 hover:scale-[1.01];
-  }
-
-  /* 버튼 애니메이션 */
-  .button-press {
-    @apply transition-mono-fast active:scale-95 active:translate-y-0.5;
-  }
-
-  .button-bounce {
-    @apply transition-spring hover:scale-105 active:scale-95;
-  }
-
-  .button-glow {
-    @apply transition-mono hover:shadow-mono-glow-strong;
-  }
-
-  /* 리스트 아이템 애니메이션 */
-  .list-item-enter {
-    animation: slideInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-
-  .list-item-stagger {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  /* 페이지 전환 애니메이션 */
-  .page-enter {
-    animation: pageEnter 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-
-  .page-exit {
-    animation: pageExit 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-
-  /* 모달 애니메이션 */
-  .modal-backdrop {
-    animation: backdropFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-
-  .modal-content {
-    animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
-
-  /* 로딩 애니메이션 */
-  .skeleton-pulse {
-    animation: skeletonPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .shimmer {
-    animation: shimmer 2s linear infinite;
-  }
-
-  /* 텍스트 애니메이션 */
-  .text-reveal {
-    animation: textReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-
-  .text-fade-in {
-    animation: textFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-
-  /* 아이콘 애니메이션 */
-  .icon-spin {
-    animation: iconSpin 1s linear infinite;
-  }
-
-  .icon-bounce {
-    animation: iconBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  }
-
-  .icon-pulse {
-    animation: iconPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  /* 상태 변경 애니메이션 */
-  .state-change {
-    @apply transition-mono;
-  }
-
-  .state-success {
-    animation: stateSuccess 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .state-error {
-    animation: stateError 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  /* 스크롤 애니메이션 */
-  .scroll-reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .scroll-reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* 네비게이션 애니메이션 */
-  .nav-item {
-    @apply transition-mono hover:scale-110 active:scale-95;
-  }
-
-  .nav-item-active {
-    animation: navItemActive 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  .card-minimal {
+    @apply transition-minimal hover:bg-gray-800;
   }
 }
 
-/* 키프레임 정의 */
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pageEnter {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes pageExit {
-  from {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.95) translateY(-20px);
-  }
-}
-
-@keyframes backdropFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes skeletonPulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200px 0;
-  }
-  100% {
-    background-position: calc(200px + 100%) 0;
-  }
-}
-
-@keyframes textReveal {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes textFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes iconSpin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes iconBounce {
-  0%,
-  20%,
-  53%,
-  80%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  40%,
-  43% {
-    transform: translate3d(0, -8px, 0);
-  }
-  70% {
-    transform: translate3d(0, -4px, 0);
-  }
-  90% {
-    transform: translate3d(0, -2px, 0);
-  }
-}
-
-@keyframes iconPulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.1);
-  }
-}
-
-@keyframes stateSuccess {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes stateError {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-5px);
-  }
-  75% {
-    transform: translateX(5px);
-  }
-}
-
-@keyframes navItemActive {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1.1);
-  }
-}
-
-/* 접근성 고려 - 애니메이션 감소 설정 */
+/* 접근성 고려 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -708,42 +255,6 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* 고대비 모드 지원 */
-@media (prefers-contrast: high) {
-  .text-tertiary {
-    @apply text-gray-200; /* 고대비 모드에서 더 밝게 */
-  }
-
-  .text-quaternary {
-    @apply text-gray-300; /* 고대비 모드에서 더 밝게 */
-  }
-
-  .text-muted {
-    @apply text-gray-400; /* 고대비 모드에서 더 밝게 */
-  }
-}
-
-/* 성능 최적화 - GPU 가속 */
-.gpu-accelerated {
-  transform: translateZ(0);
-  will-change: transform;
-}
-
-/* 호버 상태 최적화 */
-@media (hover: hover) {
-  .hover-lift:hover {
-    transform: translateY(-2px) translateZ(0);
-  }
-
-  .hover-glow:hover {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-  }
-
-  .hover-scale:hover {
-    transform: scale(1.05) translateZ(0);
   }
 }
 

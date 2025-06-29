@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle2, Circle, Plus } from "lucide-react"
-import { BottomNavigation } from "@/components/bottom-navigation"
-import { TopHeader } from "@/components/top-header"
+import { MinimalNavigation } from "@/components/minimal-navigation"
 
 interface Todo {
   id: string
@@ -64,15 +63,11 @@ export default function TodosPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      <TopHeader title="할 일 관리" />
+      <MinimalNavigation title="할 일 관리" currentPage="todos" />
 
-      <main
-        className={`px-4 pt-20 pb-20 space-y-6 transition-all duration-500 ease-out ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
-      >
-        {/* 새 할 일 추가 - 최적화된 입력 필드 */}
-        <Card className="border-gray-800 bg-gray-900 shadow-mono-card">
+      <main className="px-4 pt-20 pb-8 space-y-6">
+        {/* 새 할 일 추가 */}
+        <Card className="border-gray-800 bg-gray-900">
           <CardContent className="p-4">
             <div className="flex space-x-3">
               <Input
@@ -80,19 +75,16 @@ export default function TodosPage() {
                 value={newTodo}
                 onChange={(e) => setNewTodo(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && addTodo()}
-                className="flex-1 border-gray-700 focus:border-gray-500 bg-gray-800 text-primary placeholder-optimized shadow-mono-inset focus:shadow-mono-glow body-medium"
+                className="flex-1 border-gray-700 focus:border-gray-500 bg-gray-800 text-white placeholder:text-gray-500"
               />
-              <Button
-                onClick={addTodo}
-                className="bg-white hover:bg-gray-200 text-black shadow-mono-button transition-all-mono hover:shadow-mono-button-hover button-press"
-              >
+              <Button onClick={addTodo} className="bg-white hover:bg-gray-200 text-black">
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        {/* 필터 버튼 - 개선된 버튼 텍스트 */}
+        {/* 필터 버튼 */}
         <div className="flex space-x-3">
           {[
             { key: "all", label: "전체" },
@@ -104,54 +96,46 @@ export default function TodosPage() {
               variant={filter === filterOption.key ? "default" : "outline"}
               size="sm"
               onClick={() => setFilter(filterOption.key as typeof filter)}
-              className={`transition-all-mono label-medium ${
+              className={
                 filter === filterOption.key
-                  ? "bg-white hover:bg-gray-200 button-text-primary shadow-mono-glow-strong"
-                  : "border-gray-700 button-text-ghost bg-gray-900 hover:bg-gray-800 shadow-mono-button hover:shadow-mono-button-hover"
-              }`}
+                  ? "bg-white hover:bg-gray-200 text-black"
+                  : "border-gray-700 text-gray-300 bg-gray-900 hover:bg-gray-800"
+              }
             >
               {filterOption.label}
             </Button>
           ))}
         </div>
 
-        {/* 할 일 목록 - 최적화된 텍스트 계층 */}
+        {/* 할 일 목록 */}
         <div className="space-y-3">
-          {filteredTodos.map((todo, index) => (
-            <Card
-              key={todo.id}
-              className={`border-gray-800 bg-gray-900 shadow-mono-card hover:bg-gray-800 transition-all-mono hover:shadow-mono-card-hover hover:-translate-y-0.5 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
-              style={{ transitionDelay: `${index * 50}ms` }}
-            >
+          {filteredTodos.map((todo) => (
+            <Card key={todo.id} className="border-gray-800 bg-gray-900 hover:bg-gray-800 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-4">
                   <button onClick={() => toggleTodo(todo.id)} className="flex-shrink-0">
                     {todo.completed ? (
-                      <CheckCircle2 className="h-6 w-6 text-white transition-mono hover:scale-110" />
+                      <CheckCircle2 className="h-6 w-6 text-white" />
                     ) : (
-                      <Circle className="h-6 w-6 text-gray-400 hover:text-gray-200 transition-mono hover:scale-110" />
+                      <Circle className="h-6 w-6 text-gray-400 hover:text-gray-200" />
                     )}
                   </button>
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`body-medium transition-mono ${
-                        todo.completed ? "line-through text-muted" : "text-primary hover:text-secondary"
-                      }`}
+                      className={`text-sm font-medium ${todo.completed ? "line-through text-gray-500" : "text-white"}`}
                     >
                       {todo.title}
                     </p>
-                    <p className="text-meta mt-1">{todo.createdAt}</p>
+                    <p className="text-xs text-gray-500 mt-1">{todo.createdAt}</p>
                   </div>
                   <Badge
                     variant="outline"
-                    className={`label-small flex-shrink-0 transition-mono hover:scale-105 ${
+                    className={`text-xs flex-shrink-0 ${
                       todo.priority === "high"
-                        ? "border-red-400 text-red-300 bg-red-500/10 hover:bg-red-500/20"
+                        ? "border-red-400 text-red-300 bg-red-500/10"
                         : todo.priority === "medium"
-                          ? "border-yellow-400 text-yellow-300 bg-yellow-500/10 hover:bg-yellow-500/20"
-                          : "border-green-400 text-green-300 bg-green-500/10 hover:bg-green-500/20"
+                          ? "border-yellow-400 text-yellow-300 bg-yellow-500/10"
+                          : "border-green-400 text-green-300 bg-green-500/10"
                     }`}
                   >
                     {todo.priority === "high" ? "높음" : todo.priority === "medium" ? "보통" : "낮음"}
@@ -162,23 +146,21 @@ export default function TodosPage() {
           ))}
         </div>
 
-        {/* 빈 상태 - 개선된 텍스트 가독성 */}
+        {/* 빈 상태 */}
         {filteredTodos.length === 0 && (
           <div className="text-center py-16">
             <Circle className="h-16 w-16 text-gray-600 mx-auto mb-4" />
-            <h3 className="heading-5 text-secondary mb-2">
+            <h3 className="text-lg font-medium text-gray-300 mb-2">
               {filter === "active"
                 ? "진행중인 할 일이 없습니다"
                 : filter === "completed"
                   ? "완료된 할 일이 없습니다"
                   : "할 일이 없습니다"}
             </h3>
-            <p className="text-tertiary">새로운 할 일을 추가해보세요</p>
+            <p className="text-gray-500">새로운 할 일을 추가해보세요</p>
           </div>
         )}
       </main>
-
-      <BottomNavigation currentPage="todos" />
     </div>
   )
 }

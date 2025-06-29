@@ -1,240 +1,156 @@
 "use client"
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { User, Mail, Phone, MapPin, Settings, LogOut, Edit3, Type } from "lucide-react"
-import { BottomNavigation } from "@/components/bottom-navigation"
-import { TopHeader } from "@/components/top-header"
+import { Settings, LogOut, Type, Bell, HelpCircle, ChevronRight, Edit } from "lucide-react"
+import { MinimalNavigation } from "@/components/minimal-navigation"
 import { FontSizeSelector } from "@/components/font-size-selector"
 
-
 interface UserProfile {
-  name: string
+  displayName: string
   email: string
-  phone: string
-  location: string
+  profileImageUrl: string
+  provider: "google" | "naver" | "kakao"
   joinDate: string
-  avatar: string
 }
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile>({
-    name: "김사용자",
+    displayName: "김사용자",
     email: "user@example.com",
-    phone: "010-1234-5678",
-    location: "서울, 대한민국",
+    profileImageUrl: "/placeholder.svg?height=80&width=80",
+    provider: "google",
     joinDate: "2024-01-01",
-    avatar: "/placeholder.svg?height=80&width=80",
   })
 
-  const [isEditing, setIsEditing] = useState(false)
-  const [editProfile, setEditProfile] = useState(profile)
   const [showFontSettings, setShowFontSettings] = useState(false)
 
-  const handleSave = () => {
-    setProfile(editProfile)
-    setIsEditing(false)
-  }
-
-  const handleCancel = () => {
-    setEditProfile(profile)
-    setIsEditing(false)
-  }
+  useEffect(() => {
+    // 실제 구현에서는 여기서 DB 조회
+  }, [])
 
   const stats = [
-    { label: "완료한 할 일", value: "24", color: "bg-white" },
-    { label: "작성한 메모", value: "12", color: "bg-gray-300" },
-    { label: "연속 사용일", value: "7", color: "bg-gray-500" },
+    { label: "완료한 할 일", value: "24" },
+    { label: "작성한 메모", value: "12" },
+    { label: "연속 사용일", value: "7" },
   ]
 
+  const getProviderInfo = (provider: string) => {
+    switch (provider) {
+      case "google":
+        return { name: "Google", color: "bg-gray-800" }
+      case "naver":
+        return { name: "네이버", color: "bg-gray-800" }
+      case "kakao":
+        return { name: "카카오", color: "bg-gray-800" }
+      default:
+        return { name: "Unknown", color: "bg-gray-800" }
+    }
+  }
+
+  const providerInfo = getProviderInfo(profile.provider)
+
   return (
-    <div className="min-h-screen bg-black safe-area-top safe-area-bottom">
-      <TopHeader title="프로필" />
+    <div className="min-h-screen bg-black">
+      <MinimalNavigation title="프로필" currentPage="profile" />
 
-      <main className="px-4 pt-20 pb-20 space-y-6">
-        {/* 프로필 카드 */}
-        <Card className="border-gray-800 bg-gray-900 rounded-2xl shadow-mono-card">
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-4 mb-6">
-              <Avatar className="h-20 w-20 bg-gray-800">
-                <AvatarImage src={profile.avatar || "/placeholder.svg"} alt={profile.name} />
-                <AvatarFallback className="bg-gray-800 text-gray-300 text-lg">{profile.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <h2 className="heading-3">{profile.name}</h2>
-                <p className="text-quaternary body-medium">{profile.email}</p>
-                <Badge variant="outline" className="mt-2 border-gray-600 text-gray-400 bg-gray-800 label-small">
-                  {profile.joinDate}부터 사용
-                </Badge>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsEditing(true)}
-                className="border-gray-700 text-gray-400 hover:bg-gray-800 button-press transition-mono"
-              >
-                <Edit3 className="h-4 w-4" />
-              </Button>
+      <main className="pt-20 pb-8">
+        {/* 프로필 헤더 */}
+        <div className="px-6 py-8">
+          <div className="flex items-center space-x-4">
+            <Avatar className="h-20 w-20">
+              <AvatarImage src={profile.profileImageUrl || "/placeholder.svg"} alt={profile.displayName} />
+              <AvatarFallback className="bg-gray-800 text-gray-200 text-xl font-medium">
+                {profile.displayName.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <h1 className="text-2xl font-semibold text-white mb-1">{profile.displayName}</h1>
+              <p className="text-gray-400 mb-2">{profile.email}</p>
+              <Badge variant="secondary" className="bg-gray-800 text-gray-300 text-xs border-gray-700">
+                {providerInfo.name} 계정
+              </Badge>
             </div>
-
-            {/* 통계 */}
-            <div className="grid grid-cols-3 gap-4">
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className={`w-12 h-12 ${stat.color} rounded-full flex items-center justify-center mx-auto mb-2`}>
-                    <span className="text-black font-bold body-medium">{stat.value}</span>
-                  </div>
-                  <p className="caption text-quaternary">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* 개인 정보 카드 */}
-        <Card className="border-gray-800 bg-gray-900 rounded-2xl shadow-mono-card">
-          <CardHeader>
-            <CardTitle className="heading-5">개인 정보</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <User className="h-5 w-5 text-gray-500" />
-              <div className="flex-1">
-                <p className="caption text-quaternary">이름</p>
-                <p className="text-primary body-medium">{profile.name}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <Mail className="h-5 w-5 text-gray-500" />
-              <div className="flex-1">
-                <p className="caption text-quaternary">이메일</p>
-                <p className="text-primary body-medium">{profile.email}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <Phone className="h-5 w-5 text-gray-500" />
-              <div className="flex-1">
-                <p className="caption text-quaternary">전화번호</p>
-                <p className="text-primary body-medium">{profile.phone}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <MapPin className="h-5 w-5 text-gray-500" />
-              <div className="flex-1">
-                <p className="caption text-quaternary">위치</p>
-                <p className="text-primary body-medium">{profile.location}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* 접근성 설정 카드 */}
-        <Card className="border-gray-800 bg-gray-900 rounded-2xl shadow-mono-card">
-          <CardHeader>
-            <CardTitle className="heading-5">접근성 설정</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Button
-              variant="ghost"
-              onClick={() => setShowFontSettings(!showFontSettings)}
-              className="w-full justify-start button-text-ghost hover:bg-gray-800 button-press transition-mono"
-            >
-              <Type className="h-5 w-5 mr-3" />
-              <span className="body-medium">글자 크기 설정</span>
+            <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-gray-800">
+              <Edit className="h-5 w-5" />
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        {/* 폰트 크기 설정 */}
-        {showFontSettings && <FontSizeSelector />}
+        {/* 통계 */}
+        <div className="px-6 mb-8">
+          <div className="grid grid-cols-3 gap-4">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center py-4">
+                <div className="text-2xl font-semibold text-white mb-1">{stat.value}</div>
+                <div className="text-sm text-gray-400">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* 설정 메뉴 */}
-        <Card className="border-gray-800 bg-gray-900 rounded-2xl shadow-mono-card">
-          <CardHeader>
-            <CardTitle className="heading-5">설정</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Button
-              variant="ghost"
-              className="w-full justify-start button-text-ghost hover:bg-gray-800 button-press transition-mono"
-            >
-              <Settings className="h-5 w-5 mr-3" />
-              <span className="body-medium">앱 설정</span>
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start button-text-ghost hover:bg-gray-800 button-press transition-mono"
-            >
-              <LogOut className="h-5 w-5 mr-3" />
-              <span className="body-medium">로그아웃</span>
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="px-6 space-y-1">
+          <Button
+            variant="ghost"
+            onClick={() => setShowFontSettings(!showFontSettings)}
+            className="w-full justify-between h-14 px-4 text-white hover:bg-gray-900 rounded-xl"
+          >
+            <div className="flex items-center">
+              <Type className="h-5 w-5 text-gray-400 mr-3" />
+              <span>글자 크기</span>
+            </div>
+            <ChevronRight className="h-5 w-5 text-gray-400" />
+          </Button>
 
-        {/* 프로필 편집 모달 */}
-        {isEditing && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 modal-backdrop">
-            <Card className="w-full max-w-md border-gray-800 bg-gray-900 rounded-2xl shadow-mono-modal modal-content">
-              <CardHeader>
-                <CardTitle className="heading-5">프로필 편집</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <label className="caption text-quaternary mb-1 block">이름</label>
-                  <Input
-                    value={editProfile.name}
-                    onChange={(e) => setEditProfile({ ...editProfile, name: e.target.value })}
-                    className="bg-gray-800 border-gray-700 text-primary focus:border-gray-600 body-medium"
-                  />
-                </div>
+          <Button variant="ghost" className="w-full justify-between h-14 px-4 text-white hover:bg-gray-900 rounded-xl">
+            <div className="flex items-center">
+              <Bell className="h-5 w-5 text-gray-400 mr-3" />
+              <span>알림</span>
+            </div>
+            <ChevronRight className="h-5 w-5 text-gray-400" />
+          </Button>
 
-                <div>
-                  <label className="caption text-quaternary mb-1 block">전화번호</label>
-                  <Input
-                    value={editProfile.phone}
-                    onChange={(e) => setEditProfile({ ...editProfile, phone: e.target.value })}
-                    className="bg-gray-800 border-gray-700 text-primary focus:border-gray-600 body-medium"
-                  />
-                </div>
+          <Button variant="ghost" className="w-full justify-between h-14 px-4 text-white hover:bg-gray-900 rounded-xl">
+            <div className="flex items-center">
+              <Settings className="h-5 w-5 text-gray-400 mr-3" />
+              <span>설정</span>
+            </div>
+            <ChevronRight className="h-5 w-5 text-gray-400" />
+          </Button>
 
-                <div>
-                  <label className="caption text-quaternary mb-1 block">위치</label>
-                  <Input
-                    value={editProfile.location}
-                    onChange={(e) => setEditProfile({ ...editProfile, location: e.target.value })}
-                    className="bg-gray-800 border-gray-700 text-primary focus:border-gray-600 body-medium"
-                  />
-                </div>
+          <Button variant="ghost" className="w-full justify-between h-14 px-4 text-white hover:bg-gray-900 rounded-xl">
+            <div className="flex items-center">
+              <HelpCircle className="h-5 w-5 text-gray-400 mr-3" />
+              <span>도움말</span>
+            </div>
+            <ChevronRight className="h-5 w-5 text-gray-400" />
+          </Button>
+        </div>
 
-                <div className="flex space-x-2 pt-4">
-                  <Button
-                    onClick={handleSave}
-                    className="flex-1 bg-white hover:bg-gray-200 text-black button-press transition-mono body-medium"
-                  >
-                    저장
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={handleCancel}
-                    className="flex-1 border-gray-700 button-text-ghost bg-transparent hover:bg-gray-800 button-press transition-mono body-medium"
-                  >
-                    취소
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+        {/* 폰트 크기 설정 */}
+        {showFontSettings && (
+          <div className="px-6 mt-6">
+            <FontSizeSelector />
           </div>
         )}
-      </main>
 
-      <BottomNavigation currentPage="profile" />
+        {/* 로그아웃 */}
+        <div className="px-6 mt-8">
+          <Button
+            variant="ghost"
+            className="w-full justify-between h-14 px-4 text-red-400 hover:bg-red-950/20 rounded-xl"
+          >
+            <div className="flex items-center">
+              <LogOut className="h-5 w-5 text-red-400 mr-3" />
+              <span>로그아웃</span>
+            </div>
+            <ChevronRight className="h-5 w-5 text-red-400" />
+          </Button>
+        </div>
+      </main>
     </div>
   )
 }

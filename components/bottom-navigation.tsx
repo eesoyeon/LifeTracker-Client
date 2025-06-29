@@ -25,28 +25,67 @@ export function BottomNavigation({ currentPage }: BottomNavigationProps) {
   }
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-md border-t border-gray-800 px-4 py-2 shadow-mono-nav">
-      <div className="flex justify-around">
-        {navItems.map((item, index) => {
-          const Icon = item.icon
-          const isActive = currentPage === item.id
+    <nav className="fixed bottom-0 left-0 right-0 z-50">
+      {/* 글래스모피즘 배경 */}
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-xl border-t border-white/10"></div>
 
-          return (
-            <button
-              key={item.id}
-              onClick={() => handleNavigation(item.href)}
-              className={`flex flex-col items-center py-2 px-3 rounded-2xl nav-item gpu-accelerated ${
-                isActive
-                  ? "text-black bg-white shadow-mono-glow-strong nav-item-active"
-                  : "text-gray-500 hover:text-gray-300 hover:bg-gray-800/50 shadow-mono-button hover:shadow-mono-button-hover transition-mono"
-              }`}
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              <Icon className={`h-5 w-5 mb-1 transition-mono ${isActive ? "icon-bounce" : "hover:scale-110"}`} />
-              <span className="label-small transition-mono">{item.label}</span>
-            </button>
-          )
-        })}
+      {/* 네비게이션 컨테이너 */}
+      <div className="relative px-6 py-2 safe-area-bottom">
+        {/* 플로팅 탭바 */}
+        <div className="bg-gray-900/90 backdrop-blur-md rounded-3xl p-2 shadow-2xl border border-gray-800/50">
+          <div className="flex justify-around items-center">
+            {navItems.map((item, index) => {
+              const Icon = item.icon
+              const isActive = currentPage === item.id
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavigation(item.href)}
+                  className={`relative flex flex-col items-center justify-center p-3 rounded-2xl transition-all duration-300 transform ${
+                    isActive
+                      ? "bg-white text-black scale-110 shadow-lg"
+                      : "text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 hover:scale-105"
+                  }`}
+                  style={{
+                    animationDelay: `${index * 50}ms`,
+                    minWidth: "60px",
+                    minHeight: "60px",
+                  }}
+                >
+                  {/* 활성 상태 배경 글로우 */}
+                  {isActive && <div className="absolute inset-0 bg-white/20 rounded-2xl blur-sm scale-110"></div>}
+
+                  {/* 아이콘 */}
+                  <Icon
+                    className={`h-6 w-6 mb-1 transition-all duration-300 relative z-10 ${
+                      isActive ? "text-black" : "text-current"
+                    }`}
+                  />
+
+                  {/* 라벨 */}
+                  <span
+                    className={`text-xs font-medium transition-all duration-300 relative z-10 ${
+                      isActive ? "text-black" : "text-current"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+
+                  {/* 활성 상태 인디케이터 */}
+                  {isActive && (
+                    <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-black rounded-full"></div>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* 홈 인디케이터 (iPhone 스타일) */}
+        <div className="flex justify-center mt-2">
+          <div className="w-32 h-1 bg-white/30 rounded-full"></div>
+        </div>
       </div>
     </nav>
   )

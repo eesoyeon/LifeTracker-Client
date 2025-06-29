@@ -5,8 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle2, Circle, Plus, StickyNote, TrendingUp } from "lucide-react"
-import { BottomNavigation } from "@/components/bottom-navigation"
-import { TopHeader } from "@/components/top-header"
+import { MinimalNavigation } from "@/components/minimal-navigation"
 
 interface Todo {
   id: string
@@ -48,29 +47,25 @@ export function Dashboard() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-black page-enter">
-      <TopHeader title="Life Tracker" showLogo={true} />
+    <div className="min-h-screen bg-black">
+      <MinimalNavigation title="Life Tracker" currentPage="dashboard" />
 
-      <main className="px-4 pt-20 pb-20 space-y-6">
-        {/* 환영 메시지 - 최적화된 텍스트 대비 */}
-        <div
-          className={`bg-gradient-to-r from-gray-800 to-gray-700 rounded-3xl p-6 text-white border border-gray-700 shadow-mono-card card-hover-subtle transition-mono ${
-            isVisible ? "text-reveal" : "opacity-0 translate-y-4"
-          }`}
-        >
+      <main className="px-4 pt-20 pb-8 space-y-6">
+        {/* 환영 메시지 */}
+        <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="heading-3 mb-2">안녕하세요! 👋</h2>
-              <p className="text-description">오늘도 목표를 달성해보세요</p>
+              <h2 className="text-xl font-semibold text-white mb-2">안녕하세요! 👋</h2>
+              <p className="text-gray-400">오늘도 목표를 달성해보세요</p>
             </div>
             <div className="text-right">
-              <div className="display-small transition-mono hover:scale-110">{completionRate}%</div>
-              <div className="text-caption">완료율</div>
+              <div className="text-3xl font-bold text-white">{completionRate}%</div>
+              <div className="text-sm text-gray-400">완료율</div>
             </div>
           </div>
         </div>
 
-        {/* 통계 카드 - 개선된 텍스트 가독성 */}
+        {/* 통계 카드 */}
         <div className="grid grid-cols-3 gap-4">
           {[
             { icon: CheckCircle2, value: completedTodos, label: "완료" },
@@ -79,75 +74,54 @@ export function Dashboard() {
           ].map((stat, index) => {
             const Icon = stat.icon
             return (
-              <Card
-                key={index}
-                className={`border-gray-800 bg-gray-900 shadow-mono-card card-hover button-press gpu-accelerated ${
-                  isVisible ? "list-item-enter" : "list-item-stagger"
-                }`}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
+              <Card key={index} className="border-gray-800 bg-gray-900">
                 <CardContent className="p-4 text-center">
-                  <Icon className="h-8 w-8 text-white mx-auto mb-3 icon-pulse" />
-                  <p className="display-small mb-1 transition-mono hover:text-gray-100">{stat.value}</p>
-                  <p className="text-caption">{stat.label}</p>
+                  <Icon className="h-8 w-8 text-white mx-auto mb-3" />
+                  <p className="text-2xl font-semibold text-white mb-1">{stat.value}</p>
+                  <p className="text-sm text-gray-400">{stat.label}</p>
                 </CardContent>
               </Card>
             )
           })}
         </div>
 
-        {/* 오늘의 할 일 - 최적화된 텍스트 계층 */}
-        <Card
-          className={`border-gray-800 bg-gray-900 shadow-mono-card card-hover-subtle transition-mono ${
-            isVisible ? "scroll-reveal visible" : "scroll-reveal"
-          }`}
-        >
+        {/* 오늘의 할 일 */}
+        <Card className="border-gray-800 bg-gray-900">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
-              <CardTitle className="heading-4 flex items-center text-reveal">
-                <TrendingUp className="h-5 w-5 mr-3 icon-bounce" />
+              <CardTitle className="text-lg font-semibold text-white flex items-center">
+                <TrendingUp className="h-5 w-5 mr-3" />
                 오늘의 할 일
               </CardTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="button-text-ghost shadow-mono-button button-bounce transition-mono"
-              >
+              <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-gray-800">
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
-            {todos.slice(0, 3).map((todo, index) => (
+            {todos.slice(0, 3).map((todo) => (
               <div
                 key={todo.id}
-                className={`flex items-center space-x-3 p-3 rounded-2xl hover:bg-gray-800 transition-mono hover:shadow-mono-glow card-hover-subtle gpu-accelerated ${
-                  isVisible ? "list-item-enter" : "list-item-stagger"
-                }`}
-                style={{ animationDelay: `${(index + 3) * 100}ms` }}
+                className="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-800 transition-colors"
               >
                 {todo.completed ? (
-                  <CheckCircle2 className="h-5 w-5 text-white flex-shrink-0 state-success" />
+                  <CheckCircle2 className="h-5 w-5 text-white flex-shrink-0" />
                 ) : (
-                  <Circle className="h-5 w-5 text-gray-400 flex-shrink-0 transition-mono hover:text-gray-200 hover:scale-110" />
+                  <Circle className="h-5 w-5 text-gray-400 flex-shrink-0" />
                 )}
                 <div className="flex-1 min-w-0">
-                  <p
-                    className={`body-medium transition-mono ${
-                      todo.completed ? "line-through text-muted" : "text-primary hover:text-secondary"
-                    }`}
-                  >
+                  <p className={`text-sm font-medium ${todo.completed ? "line-through text-gray-500" : "text-white"}`}>
                     {todo.title}
                   </p>
                 </div>
                 <Badge
                   variant="outline"
-                  className={`label-small shadow-mono-button transition-mono hover:scale-105 ${
+                  className={`text-xs ${
                     todo.priority === "high"
-                      ? "border-red-400 text-red-300 bg-red-500/10 hover:bg-red-500/20"
+                      ? "border-red-400 text-red-300 bg-red-500/10"
                       : todo.priority === "medium"
-                        ? "border-yellow-400 text-yellow-300 bg-yellow-500/10 hover:bg-yellow-500/20"
-                        : "border-green-400 text-green-300 bg-green-500/10 hover:bg-green-500/20"
+                        ? "border-yellow-400 text-yellow-300 bg-yellow-500/10"
+                        : "border-green-400 text-green-300 bg-green-500/10"
                   }`}
                 >
                   {todo.priority === "high" ? "높음" : todo.priority === "medium" ? "보통" : "낮음"}
@@ -157,48 +131,30 @@ export function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* 최근 메모 - 개선된 텍스트 대비 */}
-        <Card
-          className={`border-gray-800 bg-gray-900 shadow-mono-card card-hover-subtle transition-mono ${
-            isVisible ? "scroll-reveal visible" : "scroll-reveal"
-          }`}
-        >
+        {/* 최근 메모 */}
+        <Card className="border-gray-800 bg-gray-900">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
-              <CardTitle className="heading-4 flex items-center text-reveal">
-                <StickyNote className="h-5 w-5 mr-3 icon-bounce" />
+              <CardTitle className="text-lg font-semibold text-white flex items-center">
+                <StickyNote className="h-5 w-5 mr-3" />
                 최근 메모
               </CardTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="button-text-ghost shadow-mono-button button-bounce transition-mono"
-              >
+              <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-gray-800">
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
-            {memos.slice(0, 2).map((memo, index) => (
-              <div
-                key={memo.id}
-                className={`p-4 rounded-2xl border border-gray-800 hover:bg-gray-800 transition-mono shadow-mono-card hover:shadow-mono-glow card-hover-subtle gpu-accelerated ${
-                  isVisible ? "list-item-enter" : "list-item-stagger"
-                }`}
-                style={{ animationDelay: `${(index + 6) * 100}ms` }}
-              >
-                <h4 className="label-large mb-2 transition-mono hover:text-secondary">{memo.title}</h4>
-                <p className="body-small text-tertiary mb-3 line-clamp-2 transition-mono hover:text-secondary">
-                  {memo.content}
-                </p>
-                <p className="text-meta">{memo.createdAt}</p>
+            {memos.slice(0, 2).map((memo) => (
+              <div key={memo.id} className="p-4 rounded-xl border border-gray-800 hover:bg-gray-800 transition-colors">
+                <h4 className="text-sm font-medium text-white mb-2">{memo.title}</h4>
+                <p className="text-sm text-gray-400 mb-3 line-clamp-2">{memo.content}</p>
+                <p className="text-xs text-gray-500">{memo.createdAt}</p>
               </div>
             ))}
           </CardContent>
         </Card>
       </main>
-
-      <BottomNavigation currentPage="dashboard" />
     </div>
   )
 }

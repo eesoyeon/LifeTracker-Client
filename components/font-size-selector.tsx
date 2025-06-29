@@ -3,8 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Type, Check } from "lucide-react"
-import { FontSize, fontSizeLabels, useFontSize } from "@/contexts/font-size-context"
-
+import { useFontSize, type FontSize, fontSizeLabels } from "@/contexts/font-size-context"
 
 export function FontSizeSelector() {
   const { fontSize, setFontSize } = useFontSize()
@@ -19,19 +18,19 @@ export function FontSizeSelector() {
   }
 
   return (
-    <Card className="border-gray-800 bg-gray-900 rounded-2xl shadow-mono-card">
-      <CardHeader>
-        <CardTitle className="heading-5 flex items-center">
-          <Type className="h-5 w-5 mr-3" />
+    <Card className="border border-gray-800 rounded-2xl bg-gray-900">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-lg font-semibold text-white flex items-center">
+          <Type className="h-5 w-5 mr-3 text-gray-400" />
           글자 크기 설정
         </CardTitle>
-        <p className="text-tertiary body-small">읽기 편한 글자 크기를 선택하세요</p>
+        <p className="text-gray-400 text-sm">읽기 편한 글자 크기를 선택하세요</p>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* 현재 설정 미리보기 */}
-        <div className="p-4 rounded-2xl bg-gray-800 border border-gray-700">
-          <p className="text-caption mb-2">미리보기</p>
-          <p className="text-primary body-medium transition-all duration-300">{previewTexts[fontSize]}</p>
+        <div className="p-4 rounded-xl bg-gray-800 border border-gray-700">
+          <p className="text-gray-400 text-xs mb-2">미리보기</p>
+          <p className="text-white font-medium transition-all duration-300">{previewTexts[fontSize]}</p>
         </div>
 
         {/* 글자 크기 옵션들 */}
@@ -39,17 +38,17 @@ export function FontSizeSelector() {
           {fontSizeOptions.map((size) => (
             <Button
               key={size}
-              variant={fontSize === size ? "default" : "outline"}
+              variant="ghost"
               onClick={() => setFontSize(size)}
-              className={`h-auto p-4 flex flex-col items-center space-y-2 transition-all-mono ${
+              className={`h-16 flex flex-col items-center justify-center space-y-1 rounded-xl transition-all duration-200 ${
                 fontSize === size
-                  ? "bg-white text-black shadow-mono-glow-strong"
-                  : "border-gray-700 button-text-ghost hover:bg-gray-800 shadow-mono-button hover:shadow-mono-button-hover"
+                  ? "bg-white text-black"
+                  : "bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700"
               }`}
             >
               <div className="flex items-center space-x-2">
                 {fontSize === size && <Check className="h-4 w-4" />}
-                <span className="label-medium">{fontSizeLabels[size]}</span>
+                <span className="font-medium text-sm">{fontSizeLabels[size]}</span>
               </div>
               <div
                 className="text-center transition-all duration-300"
@@ -57,18 +56,15 @@ export function FontSizeSelector() {
                   fontSize: `${size === "small" ? 0.75 : size === "medium" ? 0.875 : size === "large" ? 1 : 1.125}rem`,
                 }}
               >
-                <Type className="h-4 w-4 mx-auto mb-1" />
-                <span className="text-xs opacity-70">Aa</span>
+                <span className="opacity-60">Aa</span>
               </div>
             </Button>
           ))}
         </div>
 
         {/* 설명 텍스트 */}
-        <div className="p-3 rounded-xl bg-gray-800/50 border border-gray-700">
-          <p className="text-quaternary caption text-center">
-            설정한 글자 크기는 앱 전체에 적용되며 자동으로 저장됩니다
-          </p>
+        <div className="p-3 rounded-xl bg-gray-800">
+          <p className="text-gray-400 text-xs text-center">설정한 글자 크기는 앱 전체에 적용되며 자동으로 저장됩니다</p>
         </div>
       </CardContent>
     </Card>

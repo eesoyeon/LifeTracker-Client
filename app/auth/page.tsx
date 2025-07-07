@@ -33,14 +33,12 @@ export default function AuthPage() {
   }, [])
 
   const handleLogin = (provider: string) => {
-    console.log(`${provider} OAuth login`)
-    localStorage.setItem("auth_token", "temp_token")
+    const loginUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth2/authorization/${provider.toLowerCase()}?state=${ process.env.NEXT_PUBLIC_REDIRECT_URI}`
 
     // 부드러운 페이지 전환 애니메이션
     document.body.classList.add("page-exit")
-
     setTimeout(() => {
-      window.location.href = "/"
+      window.location.href = loginUrl
     }, 300)
   }
 

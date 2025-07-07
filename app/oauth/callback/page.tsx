@@ -15,7 +15,7 @@ export default function OAuthCallbackPage() {
       router.push("/")
     } else {
       console.error("accessToken not found in query params")
-      router.push("/login")
+      router.push("/auth")
     }
   }, [searchParams, router])
 
